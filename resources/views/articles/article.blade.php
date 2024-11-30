@@ -10,23 +10,26 @@
     <script src="//unpkg.com/alpinejs" defer></script>
     @vite('resources/css/app.css')
 </head>
-<body class="font-manrope">
+    <body class="font-manrope bg-white text-black">
     <x-header />
+    <!--page-->
+    <div class="flex flex-row mx-80 my-8">
+        <div class="flex flex-col w-3/5">
+            <h1 class="text-4xl font-bold text-center">{{ $article->title }}</h1>
+            <p class="pt-4 text-base text-gray-500 text-center">{{ $article->author->name }} - {{ $article->post_date }}</p>
+            <img src="{{ asset($article->image_path) }}" alt="{{ $article->title }}" class="mt-4">
 
-    <div class="container mx-auto mt-8">
-        <h1 class="text-4xl font-bold">{{ $article->title }}</h1>
-        <p class="text-sm text-gray-500">By {{ $article->author->name }}</p>
-        <img src="{{ asset($article->image_path) }}" alt="{{ $article->title }}" class="mt-4">
-        <div class="mt-4">
-            {!! nl2br(e($article->content)) !!}
-        </div>
-        <div class="mt-4">
-            <h2 class="text-xl font-semibold">Tags:</h2>
-            <ul class="list-disc list-inside">
-                @foreach($article->tags as $tag)
-                    <li>{{ $tag->name }}</li>
-                @endforeach
-            </ul>
+            <div class="article-content">
+                {!! $article->content !!}
+            </div>
+            <div class="mt-4">
+                <h2 class="text-xl font-semibold">Tags:</h2>
+                <ul class="list-disc list-inside">
+                    @foreach($article->tags as $tag)
+                        <li>{{ $tag->name }}</li>
+                    @endforeach
+                </ul>
+            </div>
         </div>
     </div>
 

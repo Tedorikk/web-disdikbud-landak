@@ -13,11 +13,12 @@
             <span>Buka Jam: 09.00 - 15.00</span>
         </div>
     </section>
+
     <!-- Navigation Bar -->
     <section id="navigationBar" class="flex flex-col sm:flex-row items-center justify-between bg-white/75 backdrop-blur-sm border-b-2 border-slate-200 px-4 sm:px-24 py-4">
-        <a href="{{url('/')}}" id="NavigationBarLogo" class="flex flex-row gap-2 sm:gap-10 items-center">
+        <a href="{{ url('/') }}" id="NavigationBarLogo" class="flex flex-row gap-2 sm:gap-10 items-center">
             <div id="logoNav" class="h-12 sm:h-24">
-                <img src="{{url('/images/navigationBar/logo-640.png')}}" alt="LambangKabupatenLandak" class="h-full">
+                <img src="{{ url('/images/navigationBar/logo-640.png') }}" alt="LambangKabupatenLandak" class="h-full">
             </div>
             <div id="logoTypoGraphNav" class="text-sm sm:text-xl font-bold">
                 <span>
@@ -26,11 +27,29 @@
                 </span>
             </div>
         </a>
+
         <div id="navigationBarButton" class="flex flex-wrap gap-4 sm:gap-10 mt-4 sm:mt-0 text-sm sm:text-base items-center">
-            <a href="#" class="hover:underline">Beranda</a>
-            <a href="#" class="hover:underline">Layanan</a>
-            <a href="#" class="hover:underline">Profil</a>
-            <a href="#" class="hover:underline">Publikasi</a>
+            <x-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
+                {{ __('Beranda') }}
+            </x-nav-link>
+
+            <!-- Menampilkan Menu dan Submenu -->
+            @foreach ($menus as $menu)
+                <x-nav-link :href="route('page.show', $menu->slug)" :active="request()->routeIs($menu->slug)">
+                    {{ $menu->name }} <!-- Use dynamic menu name here -->
+                    @if ($menu->children->count())
+                        <ul class="list-none p-0 m-0">
+                            @foreach ($menu->children as $child)
+                                <li class="inline-block mr-4">
+                                    <a href="{{ route('page.show', $child->slug) }}" class="text-sm">{{ $child->name }}</a> <!-- Use dynamic child name here -->
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
+                </x-nav-link>
+            @endforeach
+
+            <!-- Search Input -->
             <input type="text" name="cari" placeholder="Cari di Website..." class="border border-slate-400 rounded-xl py-2 px-3 w-full sm:w-64 focus:ring-2 focus:ring-slate-200">
         </div>
     </section>
